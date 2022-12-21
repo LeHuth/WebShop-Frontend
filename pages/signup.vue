@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100vh" class="d-flex justify-center align-center">
     <v-card
         width="384"
         class="rounded-0 border-solid border-lg"

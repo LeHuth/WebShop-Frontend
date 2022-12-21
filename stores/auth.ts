@@ -1,10 +1,12 @@
 import {defineStore} from "pinia";
 import {useFetch} from "#app";
+import {verifyTokenMutation} from "~/graphql/api";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        isLoggedIn:false,
+        isLoggedIn:true,
         token:null,
+        refreshToken: null,
         isAdmin: false,
         isStaff: false,
         user:{
@@ -12,8 +14,14 @@ export const useAuthStore = defineStore('auth', {
         }
     }),
     actions: {
-        isAuthenticated(){
-            useFetch('localhost:8000/graphql',{method: "GET", body:})
+        logToken(){
+            console.log(this.token)
+        },
+        verifyToken(){
+            const {mutate: verify} = useMutation(verifyTokenMutation, {})
         }
-    }
+
+    },
+
+    getters:{}
 })

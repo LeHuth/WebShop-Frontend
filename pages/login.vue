@@ -37,34 +37,43 @@
 </template>
 
 <script>
+import {loginMutation} from "~/graphql/api";
+import { mapState, } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
+import {tr} from "vuetify/locale";
+
 export default {
   name: "login",
   data: () => ({
     pw: "M1kT3/sP1",
     username:"user",
   }),
-
+  computed: {
+    ...mapState(useAuthStore, ['auth'])
+  },
   methods: {
     async login(){
-      const test = gql`
-        mutation tokenAuth($username: String!, $password: String!){
-          tokenAuth(username: $username, password: $password){
-            payload
-            token
-          }
-        }`
 
       const variables = {
         username: this.username,
         password: this.pw
       }
+      const {mutate: login} = useMutation(loginMutation, {variables})
 
-
-      const {mutate: login} = useMutation(test, {variables})
       const { data } = await login(variables)
       console.log(data)
       //set token in store
-      if(data.tokenAuth.token){
+
+      if(data.login.token){
+        const store = useAuthStore()
+
+        store.token = data.login.token
+        store.isLoggedIn = true
+        store.logToken()
+        const { onLogin } = useApollo()
+
+
+        onLogin(store.token)
         this.$router.push('/profile/')
 
       }

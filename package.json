@@ -10,11 +10,16 @@
   "devDependencies": {
     "@css-render/vue3-ssr": "^0.15.10",
     "@nuxtjs/apollo": "^5.0.0-alpha.5",
-    "nuxt": "3.0.0"
+    "graphql": "^16.6.0",
+    "nuxt": "3.0.0",
+    "nuxt-graphql-request": "^6.0.1"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
-    "sass": "^1.51.0",
-    "vuetify": "^3.0.0-beta.1"
+    "@vitejs/plugin-vue": "^4.0.0",
+    "sass": "^1.57.1",
+    "vite": "^4.0.2",
+    "vite-plugin-vuetify": "^1.0.1",
+    "vuetify": "^3.0.5"
   }
 }

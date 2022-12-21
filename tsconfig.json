@@ -3,5 +3,7 @@
   "extends": "./.nuxt/tsconfig.json",
   "module": "ESNext",
   "target": "esnext",
-
+  "compilerOptions": {
+    "types": ["@nuxt/types", "nuxt-graphql-request"]
+  },
 }
