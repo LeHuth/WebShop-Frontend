@@ -3,12 +3,14 @@ mutation($username: String!, $password: String!){
     login(username: $username, password: $password){
         payload
         token
+        refreshToken
     }
 }`
 
 export const verifyTokenMutation = gql`
 mutation($token: String!){
   verifyToken(token: $token){
+    success
     payload
   }
 }`
@@ -41,5 +43,14 @@ query{
       }
     }
   }
+}
+`
+
+export const refreshToken = gql`
+mutation($refreshToken: String!){
+    refreshToken(refreshToken: $refreshToken){
+    token
+    refreshToken
+    }
 }
 `

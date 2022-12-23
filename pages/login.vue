@@ -45,8 +45,8 @@ import {tr} from "vuetify/locale";
 export default {
   name: "login",
   data: () => ({
-    pw: "M1kT3/sP1",
-    username:"user",
+    pw: "admin",
+    username:"admin",
   }),
   computed: {
     ...mapState(useAuthStore, ['auth'])
@@ -66,14 +66,16 @@ export default {
 
       if(data.login.token){
         const store = useAuthStore()
-
+        store.refreshToken = data.login.refreshToken
+        const cookie = useCookie('refresh-token')
+        cookie.value = data.login.refreshToken
         store.token = data.login.token
         store.isLoggedIn = true
         store.logToken()
         const { onLogin } = useApollo()
 
 
-        onLogin(store.token)
+        onLogin(data.login.token)
         this.$router.push('/profile/')
 
       }

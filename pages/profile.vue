@@ -15,8 +15,8 @@
     <v-card-actions class="px-6 py-6 flex-column align-center justify-space-between" style="gap: 16px">
       <CustomButton width="100%" height="32" @click="change(0)" :class="selected === 0 ? 'active' : ''" text="REVIEWS"/>
       <CustomButton width="100%" height="32" @click="change(1)" :class="selected === 1 ? 'active' : ''" text="ORDERS"/>
-      <CustomButton width="100%" height="32" @click="logout" :class="selected === 2 ? 'active' : ''" text="WISHLIST"/>
-      <CustomButton width="100%" height="32" @click="test" :class="selected === 3 ? 'active' : ''" text="SETTINGS"/>
+      <CustomButton width="100%" height="32" :class="selected === 2 ? 'active' : ''" text="WISHLIST"/>
+      <CustomButton width="100%" height="32"  :class="selected === 3 ? 'active' : ''" text="SETTINGS"/>
     </v-card-actions>
     </v-card>
     <div v-for="review in data.self.reviewOwner">
@@ -30,14 +30,16 @@
 import CustomButton from "~/components/CustomButton.vue";
 import Review from "~/components/Review.vue";
 import {selfQuery} from "~/graphql/api";
+import {useCookie} from "#app";
 
 definePageMeta({
   middleware: ["auth"]
 })
 const { getToken } = useApollo()
-const token = getToken()
+const token = useCookie('apollo:default.token')
 console.log(token)
 const { data } = await useAsyncQuery(selfQuery);
+console.log(data.selfQuery)
 const selected = ref(0)
 
 function change (value) {
