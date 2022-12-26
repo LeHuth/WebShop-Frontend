@@ -54,3 +54,23 @@ mutation($refreshToken: String!){
     }
 }
 `
+
+export const allProductsQuery = gql`
+query{
+  products{
+    id
+    price
+    name
+    rating
+    category{
+      name
+    }
+    productImage{
+      image
+    }
+    manufacturer{
+      name
+    }
+    gender
+  }
+}`

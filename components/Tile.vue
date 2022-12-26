@@ -2,27 +2,27 @@
   <v-card class="rounded-0 border-solid border-lg pa-0 tile"
           style="border-color:#000 !important;" width="384" variant="flat">
     <v-row class="px-6 pt-4 justify-space-between" no-gutters>
-      <span>CLIMBING SHOE</span>
-      <span>MALE</span>
+      <span class="text-uppercase">{{product.category.name}}</span>
+      <span>{{product.gender}}</span>
     </v-row>
     <div style="height: 384px">
-      <img style="height: 100%; width: 100%" src="~/assets/images/306125004_b_otaki_la_sportiva_1.jpg" alt="imgae"/>
+      <img style="height: 100%; width: 100%" :src="product.productImage[0].image" alt="imgae"/>
     </div>
     <div class="px-6">
       <v-row no-gutters class="justify-space-between mb-2">
-          <span class="font-weight-medium">
-            LA SPORTIVA
+          <span class="font-weight-medium text-uppercase">
+            {{product.manufacturer.name}}
           </span>
         <span>
-            $159,95
+            ${{product.price}}
           </span>
       </v-row>
       <v-row no-gutters class="justify-space-between mb-4">
         <h2>
-          OTAKI
+          {{ product.name }}
         </h2>
         <h2>
-          5
+          {{ product.rating }}
         </h2>
       </v-row>
       <v-row no-gutters class="mb-4">
@@ -32,10 +32,8 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  name: "Tile"
-}
+<script setup>
+defineProps(['product'])
 </script>
 
 <style scoped>
