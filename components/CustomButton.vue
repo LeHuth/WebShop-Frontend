@@ -1,5 +1,5 @@
 <template>
-  <v-btn style="border-color:#000 !important;" class="rounded-0 border-solid border-lg ma-0" :height="height" :width="width" variant="outlined">
+  <v-btn style="outline: black solid 4px; outline-offset: -4px" class="rounded-0 ma-0" :height="height" :width="width" variant="flat">
     {{ text }}</v-btn>
 </template>
 

@@ -74,3 +74,40 @@ query{
     gender
   }
 }`
+
+export const productDetailQuery = gql`
+query($productid: Int!){
+      productDetail(productid: $productid){
+    manufacturer{
+      name
+      id
+    }
+    name
+    rating
+    price
+    shortDescription
+    stock
+    productImage{
+      image
+    }
+    productReview{
+      id
+      title
+      text
+      created
+      rating
+      member{
+        memberImage{
+          image
+          id
+        }
+        username
+      }
+      reviewVote{
+        id
+        timestamp
+      }
+    }
+  }
+}
+`

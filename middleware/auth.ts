@@ -6,7 +6,7 @@ import {tr} from "vuetify/locale";
 export default defineNuxtRouteMiddleware(async (to, from) => {
 
     const tokenCookie = useCookie('apollo:default.token')
-    console.log(tokenCookie)
+    //console.log(tokenCookie)
     let variables = {
         token: tokenCookie
     }
@@ -15,11 +15,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     try{
         // @ts-ignore
+        console.log("TRY VERIFY")
         const {data} = await verify(variables)
-        console.log(data.verifyToken)
+        //console.log(data.verifyToken)
     } catch (e){
         let rToken = useCookie('refresh-token')
-        console.log(rToken.value)
+        //console.log(rToken.value)
         let variables = {
             refreshToken: rToken.value
         }
@@ -29,17 +30,17 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             const {data} = await refresh(variables)
             let tokenCookie = useCookie('apollo:default.token')
             // @ts-ignore
-            console.log(data)
+            //console.log(data)
             // @ts-ignore
             tokenCookie.value = data.refreshToken.token
             // @ts-ignore
             rToken.value = data.refreshToken.refreshToken
-            console.log(tokenCookie.value)
+            //console.log(tokenCookie.value)
         }catch (e){
             console.error("Error while refreshing")
         }
     }
-    navigateTo(to)
+    navigateTo('/login/')
 
     // @ts-ignore
 
