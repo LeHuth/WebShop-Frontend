@@ -17,7 +17,7 @@
       <div style="outline: black 4px solid; width: 544px;" class="px-6 py-8" id="productdetailblock">
         <v-row class="justify-space-between" no-gutters>
           <h3 class="text-uppercase">{{data.productDetail.manufacturer.name}}</h3>
-          <h3>--rating--</h3>
+          <v-rating :size="24"  class="pb-2" density="comfortable" readonly :model-value="data.productDetail.rating"/>
         </v-row>
         <v-row class="justify-space-between" no-gutters>
           <h1 class="text-uppercase">{{data.productDetail.name}}</h1>
@@ -33,11 +33,11 @@
       </div>
     </div>
     <v-row class="justify-space-between mt-16 mb-8" no-gutters>
-      <CustomButton @click="selectSection(0)" height="64" width="405" text="REVIEW"/>
-      <CustomButton @click="selectSection(1)" height="64" width="405" text="TECHNICAL DETAILS"/>
-      <CustomButton @click="selectSection(2)" height="64" width="405" text="DESCRIPTION"/>
+      <CustomButton @click="selectSection(0)" :class="section === 0 ? 'active' : ''"  height="64" width="405" text="REVIEW"/>
+      <CustomButton @click="selectSection(1)" :class="section === 1 ? 'active' : ''" height="64" width="405" text="TECHNICAL DETAILS"/>
+      <CustomButton @click="selectSection(2)" :class="section === 2 ? 'active' : ''" height="64" width="405" text="DESCRIPTION"/>
     </v-row>
-    <ReviewSection :reviews="data.productDetail.productReview"/>
+    <ReviewSection v-if="section == 0" :reviews="data.productDetail.productReview"/>
   </div>
 </template>
 
@@ -45,7 +45,7 @@
 const route = useRoute()
 import {productDetailQuery} from "~/graphql/api";
 const value = ref(3)
-const section = ref(0)
+const section = useState('section', () => 0)
 
 function selectSection(value){
   section.value = value
@@ -54,15 +54,24 @@ const {data} = useAsyncQuery(productDetailQuery,{'productid': route.params.id})
 </script>
 
 <style scoped>
-input, :deep(.v-btn__content){
+input, :deep(.c-btn .v-btn__content){
   font: normal normal 24px/24px Inter;
 }
 
-:deep(.v-btn){
-  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1) !important;
+:deep(.v-btn.c-btn){
+  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
 }
 :deep(.v-btn.active){
   transform: translate(4px, 4px);
   box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+}
+
+:deep(.v-rating .v-btn__content) {
+  font-size: 24px;
+}
+
+:deep(.v-rating__wrapper){
+  margin-left: 10px;
+  margin-top: -5px;
 }
 </style>

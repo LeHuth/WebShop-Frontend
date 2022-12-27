@@ -17,7 +17,8 @@
   <v-col>
     <div style="height: 64px" class="d-flex flex-column justify-space-between">
       <h3 class="text-right" style="line-height: 0.8">20/12/2022</h3>
-      <h1 class="text-right" style="line-height: 0.7">{{rating}}</h1>
+      <!--<h1 class="text-right" style="line-height: 0.7">{{rating}}</h1>-->
+      <v-rating size="34" class="justify-end" readonly :model-value="rating"/>
     </div>
   </v-col>
 </v-row>
@@ -50,5 +51,9 @@ export default {
 :deep(.v-btn){
   min-width: 0;
   padding: 0 8px;
+}
+
+:deep(.v-rating .v-btn__content) {
+  font-size: 24px;
 }
 </style>
