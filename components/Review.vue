@@ -16,7 +16,7 @@
   </v-col>
   <v-col>
     <div style="height: 64px" class="d-flex flex-column justify-space-between">
-      <h3 class="text-right" style="line-height: 0.8">20/12/2022</h3>
+      <h3 class="text-right" style="line-height: 0.8">{{date.split('-')[2]}}/{{date.split('-')[1]}}/{{date.split('-')[0]}}</h3>
       <!--<h1 class="text-right" style="line-height: 0.7">{{rating}}</h1>-->
       <v-rating size="34" class="justify-end" readonly :model-value="rating"/>
     </div>
@@ -40,11 +40,9 @@
 </div>
 </template>
 
-<script>
-export default {
-  name: "Review",
-  props: ['username','image','text','title', 'rating']
-}
+<script setup lang="ts">
+const props = defineProps(['username','image','text','title', 'rating', 'created'])
+const date = props.created.split('T')[0]
 </script>
 
 <style scoped>

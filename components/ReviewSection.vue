@@ -4,37 +4,40 @@
     <CustomButton height="64" width="225" text="WRITE REVIEW"/>
     <div class="mt-8">
       <v-row class="mb-4" no-gutters>
-        <span>4.5</span>
+        <p>{{ avg }} AVERAGE</p>
       </v-row>
       <v-row class="flex-nowrap mb-1" no-gutters>
-        <span class="mr-2">5</span><v-progress-linear :height="16" model-value="70"/>
+        <span class="mr-2">5</span><v-progress-linear :height="16" :model-value="five/reviews.length*100"/>
       </v-row>
       <v-row class="flex-nowrap mb-1" no-gutters>
-        <span class="mr-2">4</span><v-progress-linear :height="16" model-value="15"/>
+        <span class="mr-2">4</span><v-progress-linear :height="16" :model-value="four/reviews.length*100"/>
       </v-row>
       <v-row class="flex-nowrap mb-1" no-gutters>
-        <span class="mr-2">3</span><v-progress-linear :height="16" model-value="5"/>
+        <span class="mr-2">3</span><v-progress-linear :height="16" :model-value="three/reviews.length*100"/>
       </v-row>
       <v-row class="flex-nowrap mb-1" no-gutters>
-        <span class="mr-2">2</span><v-progress-linear :height="16" model-value="0"/>
+        <span class="mr-2">2</span><v-progress-linear :height="16" :model-value="two/reviews.length*100"/>
       </v-row>
       <v-row class="flex-nowrap mb-1" no-gutters>
-        <span class="mr-2">1</span><v-progress-linear :height="16" model-value="10"/>
+        <span class="mr-2">1</span><v-progress-linear :height="16" :model-value="one/reviews.length*100"/>
       </v-row>
       <div class="d-flex flex-column mt-8">
-        <CustomButton  class="mb-4" height="32" width="225" text="RECENT"/>
-        <CustomButton  class="mb-4" height="32" width="225" text="HELPFUL"/>
-        <CustomButton @click="sortReviews2" class="mb-4" height="32" width="225" text="BEST RATING"/>
-        <CustomButton @click="sortReviews1" height="32" width="225" text="WORST RATING"/>
+        <CustomButton  class="mb-4" height="64" width="225" text="RECENT"/>
+        <CustomButton  class="mb-4" height="64" width="225" text="HELPFUL"/>
+        <CustomButton @click="sortReviews2" class="mb-4" height="64" width="225" text="BEST RATING"/>
+        <CustomButton @click="sortReviews1" height="64" width="225" text="WORST RATING"/>
       </div>
 
     </div>
 
   </div>
   <div>
-    <v-row class="mb-4" no-gutters v-for="review in reviews">
+    <WriteReview @reloadReviews="refetchReviews" image=""/>
+    <v-row class="mb-4" no-gutters v-for="review in test">
+
       <Transition name="slide-fade" mode="out-in">
-        <Review :key="rerender" :title="review.title" :text="review.text" :username="review.member.username" :image="review.member.memberImage" :rating="review.rating"/>
+
+        <Review :key="rerender" :title="review.title" :text="review.text" :created="review.created" :username="review.member.username" :image="review.member.memberImage" :rating="review.rating"/>
       </Transition>
 
     </v-row>
@@ -43,36 +46,53 @@
 </template>
 
 <script setup lang="ts">
+import {productReviewQuery} from "~/graphql/api";
+const route = useRoute()
 const props = defineProps(['reviews'])
-const test: Array<Object> = ref(props.reviews)
+const test = ref(props.reviews)
+const avg = ref(0)
+const five = ref(0)
+const four = ref(0)
+const three = ref(0)
+const two = ref(0)
+const one = ref(0)
 const rerender = ref(0)
-function compare( a: { rating: number; }, b: { rating: number; } ) {
-  if ( a.rating < b.rating ){
-    return -1;
-  }
-  if ( a.rating > b.rating ){
-    return 1;
-  }
-  return 0;
-}
-function compare2( a: { rating: number; }, b: { rating: number; } ) {
-  if ( a.rating > b.rating ){
-    return -1;
-  }
-  if ( a.rating < b.rating ){
-    return 1;
-  }
-  return 0;
-}
 function sortReviews1(){
-  props.reviews.sort(compare)
-  rerender.value ++
+  test.value.sort((a: number, b: number) => a.rating-b.rating)
+  console.log('sorted1')
+  //rerender.value ++
 }
-
 function sortReviews2(){
-  props.reviews.sort(compare2)
-  rerender.value --
+  test.value.sort((a: number, b: number) => b.rating-a.rating)
+  console.log('sorted2')
+  //rerender.value --
 }
+// todo: calculate this in the backend
+function getAvg(){
+  console.log(props.reviews.length)
+props.reviews.forEach((elem: object) => {
+  console.log(avg.value + elem.rating)
+  avg.value += Number(elem.rating)
+  if (elem.rating < 2){
+    one.value++
+  } else if(elem.rating < 3){
+    two.value++
+  } else if(elem.rating < 4){
+    three.value++
+  } else if(elem.rating < 5){
+    four.value++
+  } else {five.value++}
+
+})
+  avg.value = Number(avg.value) / Number(props.reviews.length)
+}
+async function refetchReviews() {
+  const reviews = await useAsyncQuery(productReviewQuery, {'productid': route.params.id})
+  console.log(reviews.data._rawValue.productReviews)
+  test.value = reviews.data._rawValue.productReviews
+  props.reviews.value = reviews.data._rawValue.productReviews
+}
+getAvg()
 </script>
 
 

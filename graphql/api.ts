@@ -111,3 +111,40 @@ query($productid: Int!){
   }
 }
 `
+
+export const createReviewMutation = gql`
+mutation($pId: Int!, $title: String, $text: String, $rating: Decimal!){
+    createReview(pId:$pId, title: $title, text: $text, rating: $rating){
+    review{
+     id
+    title
+      text
+      rating
+      reviewVote{
+        value
+      }
+    }
+  }
+}
+`
+
+export const productReviewQuery = gql`
+query($productid:Int!){
+productReviews(productid:$productid){
+    id
+    title
+    text
+    rating
+    created
+    reviewVote{
+      value
+    }
+    member{
+      memberImage{
+        image
+      }
+      username
+    }
+  }
+}
+`
