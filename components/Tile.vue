@@ -6,7 +6,7 @@
       <span>{{product.gender}}</span>
     </v-row>
     <div style="height: 384px">
-      <img style="height: 100%; width: 100%" :src="product.productImage[0].image" alt="imgae"/>
+     <img style="height: 100%; width: 100%" :src="product.productImage[0].image" alt="imgae"/>
     </div>
     <div class="px-6">
       <v-row no-gutters class="justify-space-between mb-2">

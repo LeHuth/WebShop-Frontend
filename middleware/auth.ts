@@ -1,12 +1,49 @@
-import { useAuthStore } from '@/stores/auth'
-import {refreshToken, verifyTokenMutation} from "~/graphql/api";
-import {useApollo} from "#imports";
-import {useCookie} from "#app";
-import {tr} from "vuetify/locale";
-export default defineNuxtRouteMiddleware(async (to, from) => {
+import {useCookie, useRouter} from "#app";
 
+export default defineNuxtRouteMiddleware( async (to, from) => {
+    const isLoggedIn = useCookie('isLoggedIn')
+    const forwardURL = useCookie('forwardUrl')
+    console.log('auth middleware')
+    if(!['login'].includes(to.name)){
+        if(isLoggedIn.value){
+            return
+        } else{
+            forwardURL.value = to.path
+            return navigateTo('/login/')
+        }
+    }
+    /*
+    const router = useRouter()
+    // get token
+    // | true -> verify
+    //      | verify success -> get self info -> fill store.user
+    // | false -> store.auth.isLoggedIn = false
+    //      | to == profile -> redirectTo('/login') && store.auth.forwardURL == 'profile'
+    if(to.fullPath == '/login/'){
+        return true
+    }
     const tokenCookie = useCookie('apollo:default.token')
-    //console.log(tokenCookie)
+
+    console.log('#########################################')
+    //console.log(to)
+    //console.log(from)
+    if(tokenCookie.value){
+        console.log('lolol')
+    } else {
+        console.log('NO TOKEN')
+        const auth = useAuthStore()
+        if(to.fullPath == '/profile/'){
+
+            await auth.setForwardURL(to.fullPath)
+            console.log('forwardurl: ', auth.forwardURL)
+            //return navigateTo('/login/')
+        }
+        if (auth.forwardURL == to.fullPath) {
+            router.push('/login/')
+        }
+
+    }
+    console.log(tokenCookie)
     let variables = {
         token: tokenCookie
     }
@@ -40,10 +77,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             console.error("Error while refreshing")
         }
     }
-    navigateTo('/login/')
+    //navigateTo('/login/')
 
     // @ts-ignore
-
+*/
 
 
 

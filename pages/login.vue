@@ -36,13 +36,49 @@
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import {loginMutation} from "~/graphql/api";
-import { mapState, } from 'pinia'
-import { useAuthStore } from '~/stores/auth'
-import {tr} from "vuetify/locale";
+import {useCookie, useRouter} from "#app";
+import {useAuthStore} from "~/stores/auth";
 
+definePageMeta({
+      name: 'login'
+    })
+//const smthing = useState('forwardURL')
+const forwardURL = useCookie('forwardUrl')
+const isLoggedIn = useCookie('isLoggedIn')
+const router = useRouter()
+//console.log('check LOGIN: ',isLoggedIn.value)
+//console.log('check forwardUrl: ',forwardURL.value)
+
+const pw = ref('admin')
+const username = ref('admin')
+
+async function login () {
+  const variables = {
+    username: username.value,
+    password: pw.value
+  }
+  const {mutate: login} = useMutation(loginMutation, {variables})
+  const { data } = await login(variables)
+
+  if(data.login.token){
+    const store = useAuthStore()
+    console.log(forwardURL.value)
+    const cookie = useCookie('refresh-token')
+    cookie.value = data.login.refreshToken
+    const { onLogin } = useApollo()
+
+
+    await onLogin(data.login.token)
+    await router.push(forwardURL.value)
+
+  }
+}
+
+/*
 export default {
+
   name: "login",
   data: () => ({
     pw: "admin",
@@ -66,6 +102,8 @@ export default {
 
       if(data.login.token){
         const store = useAuthStore()
+        const forwardURL = useState('forwardURL')
+        console.log(forwardURL.value)
         store.refreshToken = data.login.refreshToken
         const cookie = useCookie('refresh-token')
         cookie.value = data.login.refreshToken
@@ -76,12 +114,12 @@ export default {
 
 
         onLogin(data.login.token)
-        this.$router.push('/profile/')
+        this.$router.push(forwardURL.value)
 
       }
     }
   }
-}
+}*/
 </script>
 
 <style scoped>

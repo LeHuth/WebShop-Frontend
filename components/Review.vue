@@ -36,15 +36,20 @@
       </p>
     </v-col>
   </v-row>
+  <CustomButton width="32" height="16" text="delete" class="delete-button" @click="deleteContent"/>
 </v-card>
 </div>
 </template>
 
 <script setup lang="ts">
+
 const props = defineProps(['username','image','text','title', 'rating', 'created'])
 const date = props.created.split('T')[0]
-</script>
 
+function deleteContent(){
+  console.log('written by ai')
+}
+</script>
 <style scoped>
 :deep(.v-btn){
   min-width: 0;
@@ -53,5 +58,11 @@ const date = props.created.split('T')[0]
 
 :deep(.v-rating .v-btn__content) {
   font-size: 24px;
+}
+
+.delete-button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 }
 </style>

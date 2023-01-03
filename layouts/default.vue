@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main class="justify-center">
-      <v-container class="px-0">
+      <v-container class="pa-0">
+        <NavHeader/>
         <slot/>
       </v-container>
     </v-main>
@@ -9,8 +10,11 @@
 </template>
 
 <script>
+import NavHeader from "~/components/NavHeader.vue";
+
 export default {
-  name: "default"
+  name: "default",
+  components: {NavHeader}
 }
 </script>
 

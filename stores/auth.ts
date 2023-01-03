@@ -4,13 +4,16 @@ import {verifyTokenMutation} from "~/graphql/api";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        isLoggedIn:true,
+        isLoggedIn:false,
+        forwardURL: '',
         token:null,
         refreshToken: null,
         isAdmin: false,
         isStaff: false,
         user:{
             username: "",
+            image: '',
+            id: ''
         }
     }),
     actions: {
@@ -19,6 +22,13 @@ export const useAuthStore = defineStore('auth', {
         },
         verifyToken(){
             const {mutate: verify} = useMutation(verifyTokenMutation, {})
+        },
+        setForwardURL(url:string){
+            this.forwardURL = url
+        },
+        getIdFromCookies(){
+            const cookie = useCookie('userid')
+            this.user.id = cookie.value
         }
 
     },

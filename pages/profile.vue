@@ -20,7 +20,7 @@
     </v-card-actions>
     </v-card>
     <div v-for="review in data.self.reviewOwner">
-      <Review :username="data.self.username" :text="review.text" :title="review.title" :rating="review.rating" :image="data.self.memberImage"/>
+      <!--<Review :username="data.self.username" :text="review.text" :title="review.title" :rating="review.rating" :image="data.self.memberImage"/>-->
     </div>
 
   </div>
@@ -30,10 +30,10 @@
 import CustomButton from "~/components/CustomButton.vue";
 import Review from "~/components/Review.vue";
 import {selfQuery} from "~/graphql/api";
-import {useCookie} from "#app";
 
 definePageMeta({
-  middleware: ["auth"]
+  name: 'profile',
+  middleware: ['auth']
 })
 const { getToken } = useApollo()
 const token = useCookie('apollo:default.token')

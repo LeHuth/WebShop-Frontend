@@ -57,8 +57,10 @@ mutation($refreshToken: String!){
 
 export const allProductsQuery = gql`
 query{
-  products{
-    id
+  allProducts{
+  edges{
+      node{
+        id
     price
     name
     rating
@@ -72,11 +74,14 @@ query{
       name
     }
     gender
+      }
+    }
+    
   }
 }`
 
 export const productDetailQuery = gql`
-query($productid: Int!){
+query($productid: String!){
       productDetail(productid: $productid){
     manufacturer{
       name
@@ -106,6 +111,9 @@ query($productid: Int!){
       reviewVote{
         id
         timestamp
+        member{
+            id
+        }
       }
     }
   }
@@ -148,3 +156,13 @@ productReviews(productid:$productid){
   }
 }
 `
+
+export const voteMutation = gql`
+    mutation($rId:Int!,$upvote:Boolean!){
+        vote(rId:$rId, upvote: $upvote){
+            ok
+            vote{
+                value
+            }
+        }
+    }`

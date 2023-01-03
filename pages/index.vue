@@ -1,7 +1,7 @@
 <template>
   <div v-if="data" style="height: 100vh; row-gap: 32px" class="d-flex flex-wrap justify-space-around align-center">
-    <div v-for="p in data.products">
-      <Tile @click="$router.push('/product/'+p.id)" :product="p"/>
+    <div v-for="p in data.allProducts.edges">
+      <Tile @click="$router.push('/product/'+p.node.id)" :product="p.node"/>
     </div>
   </div>
 </template>
