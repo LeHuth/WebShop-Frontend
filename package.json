@@ -7,6 +7,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "engines": {
+    "node": "16.13.1"
+  },
   "devDependencies": {
     "@css-render/vue3-ssr": "^0.15.10",
     "@nuxtjs/apollo": "^5.0.0-alpha.5",
