@@ -38,6 +38,10 @@ query{
       title
       text
       rating
+      created
+      product{
+      id
+      }
       reviewVote{
         value
       }
@@ -102,6 +106,7 @@ query($productid: String!){
       created
       rating
       member{
+        id
         memberImage{
           image
           id
@@ -121,7 +126,7 @@ query($productid: String!){
 `
 
 export const createReviewMutation = gql`
-mutation($pId: Int!, $title: String, $text: String, $rating: Decimal!){
+mutation($pId: String!, $title: String, $text: String, $rating: Decimal!){
     createReview(pId:$pId, title: $title, text: $text, rating: $rating){
     review{
      id
@@ -137,7 +142,7 @@ mutation($pId: Int!, $title: String, $text: String, $rating: Decimal!){
 `
 
 export const productReviewQuery = gql`
-query($productid:Int!){
+query($productid:String!){
 productReviews(productid:$productid){
     id
     title
@@ -148,6 +153,7 @@ productReviews(productid:$productid){
       value
     }
     member{
+      id
       memberImage{
         image
       }

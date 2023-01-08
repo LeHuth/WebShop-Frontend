@@ -1,10 +1,8 @@
 import {useAuthStore} from "~/stores/auth";
-import {useAuth} from "~/composables/useAuth";
-import {useForwardUrl} from "~/composables/useForwardUrl";
 export default defineNuxtRouteMiddleware((from, to) => {
-    const isLoggedIn = useAuth()
-    const forwardURL = useForwardUrl()
-    if(isLoggedIn.value){
+    const authStore = useAuthStore()
+    const forwardURL = useCookie('forwardUrl')
+    if(authStore.isLoggedIn){
         console.log('is logged in')
         return true
     } else{

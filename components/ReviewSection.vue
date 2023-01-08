@@ -32,7 +32,11 @@
 
   </div>
   <div>
-    <WriteReview @reloadReviews="refetchReviews" image=""/>
+    <div v-if="authStore.isLoggedIn">
+      <WriteReview v-if="!reviewForCurrentUser()" @reloadReviews="refetchReviews" image=""/>
+      <Review v-else :title="myReview.title" :text="myReview.text" :created="myReview.created" :username="authStore.user.username" :image="authStore.user.image" :rating="myReview.rating" />
+    </div>
+
     <v-row class="mb-4" no-gutters v-for="review in test">
 
       <Transition name="slide-fade" mode="out-in">
@@ -47,9 +51,13 @@
 
 <script setup lang="ts">
 import {productReviewQuery} from "~/graphql/api";
+import {useAuthStore} from "~/stores/auth";
+import {tr} from "vuetify/locale";
 const route = useRoute()
+const authStore = useAuthStore()
 const props = defineProps(['reviews'])
 const test = ref(props.reviews)
+const myReview = ref(null)
 const avg = ref(0)
 const five = ref(0)
 const four = ref(0)
@@ -70,6 +78,7 @@ function sortReviews2(){
 // todo: calculate this in the backend
 function getAvg(){
   console.log(props.reviews.length)
+  console.log(authStore.isLoggedIn)
 props.reviews.forEach((elem: object) => {
   console.log(avg.value + elem.rating)
   avg.value += Number(elem.rating)
@@ -91,6 +100,18 @@ async function refetchReviews() {
   console.log(reviews.data._rawValue.productReviews)
   test.value = reviews.data._rawValue.productReviews
   props.reviews.value = reviews.data._rawValue.productReviews
+}
+
+function reviewForCurrentUser(){
+
+  authStore.user.reviews.forEach(elem => {
+    if(elem.product.id == route.params.id){
+      myReview.value = elem
+    }
+  })
+  console.log(!!myReview)
+  return !!myReview.value;
+
 }
 getAvg()
 </script>

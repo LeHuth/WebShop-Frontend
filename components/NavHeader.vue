@@ -6,7 +6,7 @@
     <div @click="$router.push('/profile/')" v-if="data" style="height: 64px; cursor: pointer">
         <img style="outline: black solid 4px; outline-offset: -4px;" :src="data.self.memberImage[0].image" width="64" height="64" />
     </div>
-    <CustomButton v-else height="64" width="128" text="LOGIN"/>
+    <CustomButton @click="navigateTo('/login/')" v-else height="64" width="128" text="LOGIN"/>
   </div>
 </template>
 
