@@ -30,7 +30,7 @@ export default defineNuxtConfig({
         }
     },
     components: true,
-    css: ['vuetify/lib/styles/main.sass', '~/assets/fonts.css'],
+    css: ['vuetify/lib/styles/main.sass', '~/assets/Fonts.css'],
     build: {
         transpile: ['vuetify'],
     },
